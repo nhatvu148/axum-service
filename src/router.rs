@@ -8,6 +8,7 @@ use tower_http::cors::{Any, CorsLayer};
 
 use crate::routes::{
     always_errors::always_errors,
+    get_json::get_json,
     hello_world::hello_world,
     middleware_message::middleware_message,
     mirror_body_json::mirror_body_json,
@@ -53,4 +54,5 @@ pub fn create_router() -> Router {
         .layer(cors)
         .route("/always_errors", get(always_errors))
         .route("/returns_201", post(returns_201))
+        .route("/get_json", get(get_json))
 }
