@@ -1,3 +1,4 @@
+pub mod always_errors;
 pub mod hello_world;
 pub mod middleware_message;
 pub mod mirror_body_json;

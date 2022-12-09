@@ -7,6 +7,7 @@ use axum::{
 use tower_http::cors::{Any, CorsLayer};
 
 use crate::routes::{
+    always_errors::always_errors,
     hello_world::hello_world,
     middleware_message::middleware_message,
     mirror_body_json::mirror_body_json,
@@ -49,4 +50,5 @@ pub fn create_router() -> Router {
         .route("/middleware_message", get(middleware_message))
         .layer(Extension(shared_data))
         .layer(cors)
+        .route("/always_errors", get(always_errors))
 }
