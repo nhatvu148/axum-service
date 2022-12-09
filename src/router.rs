@@ -1,7 +1,9 @@
 use axum::{
+    http::Method,
     routing::{get, post},
     Router,
 };
+use tower_http::cors::{Any, CorsLayer};
 
 use crate::routes::{
     hello_world::hello_world,
@@ -14,6 +16,10 @@ use crate::routes::{
 };
 
 pub fn create_router() -> Router {
+    let cors = CorsLayer::new()
+        .allow_methods([Method::GET, Method::POST])
+        .allow_origin(Any);
+
     Router::new()
         .route("/", get(hello_world))
         .route("/mirror_body_string", post(mirror_body_string))
@@ -23,4 +29,5 @@ pub fn create_router() -> Router {
         .route("/query_params", get(query_params))
         .route("/mirror_user_agent", get(mirror_user_agent))
         .route("/mirror_custom_header", get(mirror_custom_header))
+        .layer(cors)
 }
