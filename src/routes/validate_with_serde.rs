@@ -3,7 +3,7 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct RequestUser {
-    username: String,
+    username: Option<String>,
     password: String,
 }
 
