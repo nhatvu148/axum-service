@@ -1,12 +1,13 @@
 use axum::{
     http::Method,
     routing::{get, post},
-    Router,
+    Extension, Router,
 };
 use tower_http::cors::{Any, CorsLayer};
 
 use crate::routes::{
     hello_world::hello_world,
+    middleware_message::middleware_message,
     mirror_body_json::mirror_body_json,
     mirror_body_string::mirror_body_string,
     mirror_custom_header::mirror_custom_header,
@@ -15,10 +16,18 @@ use crate::routes::{
     query_params::query_params,
 };
 
+#[derive(Clone)]
+pub struct SharedData {
+    pub message: String,
+}
+
 pub fn create_router() -> Router {
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
         .allow_origin(Any);
+    let shared_data = SharedData {
+        message: "Hello from shared data".to_owned(),
+    };
 
     Router::new()
         .route("/", get(hello_world))
@@ -29,5 +38,7 @@ pub fn create_router() -> Router {
         .route("/query_params", get(query_params))
         .route("/mirror_user_agent", get(mirror_user_agent))
         .route("/mirror_custom_header", get(mirror_custom_header))
+        .route("/middleware_message", get(middleware_message))
         .layer(cors)
+        .layer(Extension(shared_data))
 }

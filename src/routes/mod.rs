@@ -1,4 +1,5 @@
 pub mod hello_world;
+pub mod middleware_message;
 pub mod mirror_body_json;
 pub mod mirror_body_string;
 pub mod mirror_custom_header;
