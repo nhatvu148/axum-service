@@ -17,6 +17,7 @@ use crate::routes::{
     path_variables::{hard_coded_path, path_variables},
     query_params::query_params,
     read_middleware_custom_header::read_middleware_custom_header,
+    returns_201::returns_201,
     set_middleware_custom_header::set_middleware_custom_header,
 };
 
@@ -51,4 +52,5 @@ pub fn create_router() -> Router {
         .layer(Extension(shared_data))
         .layer(cors)
         .route("/always_errors", get(always_errors))
+        .route("/returns_201", post(returns_201))
 }

@@ -8,4 +8,5 @@ pub mod mirror_user_agent;
 pub mod path_variables;
 pub mod query_params;
 pub mod read_middleware_custom_header;
+pub mod returns_201;
 pub mod set_middleware_custom_header;
