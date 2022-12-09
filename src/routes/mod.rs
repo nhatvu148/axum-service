@@ -11,3 +11,4 @@ pub mod query_params;
 pub mod read_middleware_custom_header;
 pub mod returns_201;
 pub mod set_middleware_custom_header;
+pub mod validate_with_serde;

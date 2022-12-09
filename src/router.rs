@@ -20,6 +20,7 @@ use crate::routes::{
     read_middleware_custom_header::read_middleware_custom_header,
     returns_201::returns_201,
     set_middleware_custom_header::set_middleware_custom_header,
+    validate_with_serde::validate_with_serde,
 };
 
 #[derive(Clone)]
@@ -55,4 +56,5 @@ pub fn create_router() -> Router {
         .route("/always_errors", get(always_errors))
         .route("/returns_201", post(returns_201))
         .route("/get_json", get(get_json))
+        .route("/validate_with_serde", post(validate_with_serde))
 }
