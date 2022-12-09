@@ -4,8 +4,10 @@ use axum::{
 };
 
 use crate::routes::{
-    hello_world::hello_world, mirror_body_json::mirror_body_json,
+    hello_world::hello_world,
+    mirror_body_json::mirror_body_json,
     mirror_body_string::mirror_body_string,
+    path_variables::{hard_coded_path, path_variables},
 };
 
 pub fn create_router() -> Router {
@@ -13,4 +15,6 @@ pub fn create_router() -> Router {
         .route("/", get(hello_world))
         .route("/mirror_body_string", post(mirror_body_string))
         .route("/mirror_body_json", post(mirror_body_json))
+        .route("/path_variables/:id", get(path_variables))
+        .route("/path_variables/15", get(hard_coded_path))
 }
