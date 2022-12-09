@@ -1,5 +1,6 @@
 use axum::{
     http::Method,
+    middleware,
     routing::{get, post},
     Extension, Router,
 };
@@ -14,6 +15,8 @@ use crate::routes::{
     mirror_user_agent::mirror_user_agent,
     path_variables::{hard_coded_path, path_variables},
     query_params::query_params,
+    read_middleware_custom_header::read_middleware_custom_header,
+    set_middleware_custom_header::set_middleware_custom_header,
 };
 
 #[derive(Clone)]
@@ -30,6 +33,11 @@ pub fn create_router() -> Router {
     };
 
     Router::new()
+        .route(
+            "/read_middleware_custom_header",
+            get(read_middleware_custom_header),
+        )
+        .route_layer(middleware::from_fn(set_middleware_custom_header))
         .route("/", get(hello_world))
         .route("/mirror_body_string", post(mirror_body_string))
         .route("/mirror_body_json", post(mirror_body_json))
@@ -39,6 +47,6 @@ pub fn create_router() -> Router {
         .route("/mirror_user_agent", get(mirror_user_agent))
         .route("/mirror_custom_header", get(mirror_custom_header))
         .route("/middleware_message", get(middleware_message))
-        .layer(cors)
         .layer(Extension(shared_data))
+        .layer(cors)
 }
