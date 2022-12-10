@@ -1,4 +1,5 @@
 pub mod always_errors;
+pub mod custom_json_extractor;
 pub mod get_json;
 pub mod hello_world;
 pub mod middleware_message;
