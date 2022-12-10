@@ -1,6 +1,11 @@
 use axum_service::run;
+use dotenvy::dotenv;
+use dotenvy_macro::dotenv;
 
 #[tokio::main]
 async fn main() {
-    run().await
+    dotenv().ok();
+    let database_uri = dotenv!("DATABASE_URL");
+
+    run(database_uri).await
 }
