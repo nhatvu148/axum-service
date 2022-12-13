@@ -1,15 +1,19 @@
 use axum::{
+    extract::FromRef,
     http::Method,
     middleware,
     routing::{get, post},
     Extension, Router,
 };
+use sea_orm::DatabaseConnection;
 use tower_http::cors::{Any, CorsLayer};
 
 use crate::routes::{
     always_errors::always_errors,
+    create_task::create_task,
     custom_json_extractor::custom_json_extractor,
     get_json::get_json,
+    get_tasks::{get_all_tasks, get_one_task},
     hello_world::hello_world,
     middleware_message::middleware_message,
     mirror_body_json::mirror_body_json,
@@ -29,13 +33,20 @@ pub struct SharedData {
     pub message: String,
 }
 
-pub fn create_router() -> Router {
+#[derive(Clone, FromRef)]
+pub struct AppState {
+    pub database: DatabaseConnection,
+}
+
+pub async fn create_routes(database: DatabaseConnection) -> Router {
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
         .allow_origin(Any);
     let shared_data = SharedData {
         message: "Hello from shared data".to_owned(),
     };
+
+    let app_state = AppState { database };
 
     Router::new()
         .route(
@@ -57,6 +68,10 @@ pub fn create_router() -> Router {
         .route("/get_json", get(get_json))
         .route("/validate_with_serde", post(validate_with_serde))
         .route("/custom_json_extractor", post(custom_json_extractor))
+        .route("/tasks", post(create_task))
+        .route("/tasks", get(get_all_tasks))
+        .route("/tasks/:task_id", get(get_one_task))
         .layer(Extension(shared_data))
+        .with_state(app_state)
         .layer(cors)
 }
